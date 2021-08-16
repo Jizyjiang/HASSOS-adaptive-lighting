@@ -1,25 +1,23 @@
-# Adaptive Lighting component for Home Assistant
+# HASS OS 自动适应灯光照明组件
 
 ![](https://github.com/home-assistant/brands/raw/b4a168b9af282ef916e120d31091ecd5e3c35e66/core_integrations/adaptive_lighting/icon.png)
 
 _Try out this code by adding https://github.com/basnijholt/adaptive-lighting to your custom repos in [HACS (Home Assistant Community Store)](https://hacs.xyz/) and install it!_
 
 
-The `adaptive_lighting` platform changes the settings of your lights throughout the day.
-It uses the position of the sun to calculate the color temperature and brightness that is most fitting for that time of the day.
-Scientific research has shown that this helps to maintain your natural circadian rhythm (your biological clock) and might lead to improved sleep, mood, and general well-being.
+adaptive_lighting组件可以在一天中更改灯光设置。它使用太阳的位置来计算最适合一天中该时间的色温和亮度。科学研究表明，这有助于维持你的自然昼夜节律（你的生物钟），并可能改善睡眠、情绪和总体幸福感。
 
-In practical terms, this means that after the sun sets, the brightness of your lights will decrease to a certain minimum brightness, while the color temperature will be at its coolest color temperature at noon, after which it will decrease and reach its warmest color at sunset.
-Around sunrise, the opposite will happen.
+实际上，这意味着太阳落山后，灯光的亮度将降低到某个最低亮度，而色温将在中午处于最冷的色温，之后会降低，并在日落时达到最暖的颜色。
+在日出前后，相反的情况会发生。
 
-Additionally, the integration provides a way to define and set your lights in "sleep mode".
-When "sleep mode" is enabled, the lights will be at a minimal brightness and have a very warm color.
+此外，该模块还提供了一个“睡眠模式”下定义和设置灯光的方法。
+当启用“睡眠模式”时，灯光将处于最低亮度，并具有非常温暖的颜色。
 
-The integration creates 4 switches (in this example the component's name is `"living_room"`):
-1. `switch.adaptive_lighting_living_room`, which turns the Adaptive Lighting integration on or off. It has several attributes that show the current light settings.
-2. `switch.adaptive_lighting_sleep_mode_living_room`, which when activated, turns on "sleep mode" (you can set a specific `sleep_brightness` and `sleep_color_temp`).
-3. `switch.adaptive_lighting_adapt_brightness_living_room`, which sets whether the integration should adapt the brightness of the lights (if supported by the light).
-4. `switch.adaptive_lighting_adapt_color_living_room`, which sets whether the integration should adapt the color of the lights (if supported by the light).
+本集成拥有4个开关(在本例中，组件的名称为`"living_room"`):
+1. `switch.adaptive_lighting_living_room`, 这将打开或关闭自适应照明集成。它有几个属性显示当前灯光设置。
+2. `switch.adaptive_lighting_sleep_mode_living_room`, 激活后，将打开“睡眠模式”（您可以设置特定的“sleep_brightness` 和 `sleep_color_temp`).
+3. `switch.adaptive_lighting_adapt_brightness_living_room`, 设置集成是否应调整灯光亮度（如果灯光支持）。
+4. `switch.adaptive_lighting_adapt_color_living_room`,设置集成是否应调整灯光的色温（如果灯光支持）
 
 ## Taking back control
 
@@ -31,7 +29,7 @@ Additionally, there is an option to detect all state changes (when `detect_non_h
 It does this by comparing a light's state to Adaptive Lighting's previously used settings.
 Whenever a light gets marked as "manually controlled", an `adaptive_lighting.manual_control` event is fired, such that one can use this information in automations.
 
-## Configuration
+## 配置
 
 This integration is both fully configurable through YAML _and_ the frontend. (**Configuration** -> **Integrations** -> **Adaptive Lighting**, **Adaptive Lighting** -> **Options**)
 Here, the options in the frontend and in YAML have the same names.
@@ -43,31 +41,31 @@ adaptive_lighting:
     - light.living_room_lights
 ```
 
-### Options
-| option                | description                                                                                                                                                                                                                   | required   | default   | type    |
+### 选项
+| 选项                | 描述                                                                                                                                                                                                                   | 必须要求   | 默认   | 类型    |
 |-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|-----------|---------|
-| name                  | The name to use when displaying this switch.                                                                                                                                                                                  | False      | default   | string  |
-| lights                | List of light entities for Adaptive Lighting to control (may be empty).                                                                                                                                                       | False      | list      | []      |
-| prefer_rgb_color      | Whether to use RGB color adjustment instead of native light color temperature.                                                                                                                                                | False      | False     | boolean |
+|name                  | 显示此开关时要使用的名称。                                                                                                                                                                                 | False      | default   | string  |
+| light                | 自适应照明需要控制的光实体列表（可能为空）。                                                                                                                                                      | False      | list      | []      |
+| prefer_rgb_color      |是否使用RGB色调代替原生光色温                                                                                                                                                | False      | False     | boolean |
 | initial_transition    | How long the first transition is when the lights go from `off` to `on` (or when "sleep mode" is toggled).                                                                                                                     | False      | 1         | time    |
 | transition            | How long the transition is when the lights change, in seconds.                                                                                                                                                                | False      | 45        | integer |
 | interval              | How often to adapt the lights, in seconds.                                                                                                                                                                                    | False      | 90        | integer |
-| min_brightness        | The minimum percent of brightness to set the lights to.                                                                                                                                                                       | False      | 1         | integer |
-| max_brightness        | The maximum percent of brightness to set the lights to.                                                                                                                                                                       | False      | 100       | integer |
+| min_brightness        | 设置灯光的最低亮度百分比。                                                                                                                                                                       | False      | 1         | integer |
+| max_brightness        | 设置灯光的最大亮度百分比。                                                                                                                                                                       | False      | 100       | integer |
 | min_color_temp        | The warmest color temperature to set the lights to, in Kelvin.                                                                                                                                                                | False      | 2000      | integer |
 | max_color_temp        | The coldest color temperature to set the lights to, in Kelvin.                                                                                                                                                                | False      | 5500      | integer |
-| sleep_brightness      | Brightness of lights while the sleep mode is enabled.                                                                                                                                                                         | False      | 1         | integer |
-| sleep_color_temp      | Color temperature of lights while the sleep mode is enabled.                                                                                                                                                                  | False      | 1000      | integer |
-| sunrise_time          | Override the sunrise time with a fixed time.                                                                                                                                                                                  | False      | time      |         |
-| sunrise_offset        | Change the sunrise time with a positive or negative offset.                                                                                                                                                                   | False      | 0         | time    |
-| sunset_time           | Override the sunset time with a fixed time.                                                                                                                                                                                   | False      | time      |         |
-| sunset_offset         | Change the sunset time with a positive or negative offset.                                                                                                                                                                    | False      | 0         | time    |
-| only_once             | Whether to keep adapting the lights (false) or to only adapt the lights as soon as they are turned on (true).                                                                                                                 | False      | False     | boolean |
-| take_over_control     | If another source calls `light.turn_on` while the lights are on and being adapted, disable Adaptive Lighting.                                                                                                                 | False      | True      | boolean |
+| sleep_brightness      | 睡眠模式时的灯光亮度。                                                                                                                                                                        | False      | 1         | integer |
+| sleep_color_temp      | 睡眠模式时的灯光色温。                                                                                                                                                                  | False      | 1000      | integer |
+| sunrise_time          | 用固定的时间覆盖日出时间。                                                                                                                                                                                 | False      | time      |         |
+| sunrise_offset        | C用正负偏移改变日出时间。                                                                                                                                                                   | False      | 0         | time    |
+| sunset_time           | 用固定的时间覆盖日落时间。                                                                                                                                                                               | False      | time      |         |
+| sunset_offset         | 用正负偏移改变日落时间。                                                                                                                                                                    | False      | 0         | time    |
+| only_once             | 是继续调整灯（False），还是只在灯打开后立即调整（true）).                                                                                                                 | False      | False     | boolean |
+| take_over_control     | 如果另一个源在灯亮起并正在适应时调用light.turn_on，请禁用自适应照明。                                                                                                                 | False      | True      | boolean |
 | detect_non_ha_changes | Whether to detect state changes and stop adapting lights, even not from `light.turn_on`. Needs `take_over_control` to be enabled. Note that by enabling this option, it calls 'homeassistant.update_entity' every 'interval'! | False  | False     | boolean |
 | separate_turn_on_commands | Whether to use separate `light.turn_on` calls for color and brightness, needed for some types of lights | False | False | boolean |
 
-Full example:
+完整实例:
 
 ```yaml
 # Example configuration.yaml entry
@@ -94,19 +92,19 @@ adaptive_lighting:
 
 ```
 
-### Services
+### 服务
 
-`adaptive_lighting.apply` applies Adaptive Lighting settings to lights on demand.
+`adaptive_lighting.apply` 将自适应照明设置应用于按需照明。
 
 | Service data attribute    | Optional | Description                                                             |
 |---------------------------|----------|-------------------------------------------------------------------------|
-| `entity_id`               |       no | The `entity_id` of the switch with the settings to apply.               |
-| `lights`                  |       no | A light (or list of lights) to apply the settings to.                   |
-| `transition`              |      yes | The number of seconds for the transition.                               |
-| `adapt_brightness` | yes | Whether to change the brightness of the light or not.                                        |
-| `adapt_color`      | yes | Whether to adapt the color on supporting lights.                                             |
-| `prefer_rgb_color` | yes | Whether to prefer RGB color adjustment over of native light color temperature when possible. |
-| `turn_on_lights`   | yes | Whether to turn on lights that are currently off.                                            |
+| `entity_id`               |       no | 带有要应用设置的开关的 `entity_id`。      |
+| `lights`                  |       no | 应用设置的灯（或灯列表）。                   |
+| `transition`              |      yes | 过渡的秒数。                        |
+| `adapt_brightness` | yes | 是否改变光线的亮度。                                       |
+| `adapt_color`      | yes | 是否对配套灯进行颜色的调整。                                            |
+| `prefer_rgb_color` | yes | 是否尽可能选择RGB颜色调整而不是本色温度。 |
+| `turn_on_lights`   | yes |是否打开当前关闭的灯。                                          |
 
 `adaptive_lighting.set_manual_control` can mark (or unmark) whether a light is "manually controlled", meaning that when a light has `manual_control`, the light is not adapted.
 
